@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('/images/register.png'); /* Replace 'background.jpg' with your image file name */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        form {
+            position: absolute;
+            left: 780px;
+            font-size: 20px;
+            top : 125px;
+            color: #6D3914;
+            font-weight: 600;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        h1 {
+            position: absolute;
+            right: 240px;
+            top: 20px;
+            font-size: 50px;
+            color: #4C2B08;
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="password"] {
+            width: 100%;
+            padding: 6px;
+            margin-bottom: 20px;
+            border: 1px solid #6D3914;
+            border-radius: 5px;
+        }
+        button {
+            width: 60%;
+            padding: 10px;
+            background-color: #6D3914;
+            color: whitesmoke;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            position: absolute;
+            left: 70px;
+        }
+
+        button:hover {
+            background-color: #4C2B08;
+        }
+    </style>
+</head>
+<body>
+    <h1>Register</h1>
+    <form id="registerForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="cuisine">Favorite Cuisine:</label>
+        <input type="text" id="cuisine" name="cuisine" required><br><br>
+
+        <label for="imageUrl">Image URL:</label>
+        <input type="url" id="imageUrl" name="imageUrl" required><br><br>
+
+        
+        <button type="submit">Register</button>
+    </form>
+    <div id="message"></div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const email = document.getElementById('email').value;
+            const cuisine = document.getElementById('cuisine').value;
+            const imageUrl = document.getElementById('imageUrl').value;
+
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password, email, cuisine, imageUrl })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert('Registration successful! You can now log in.');
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1000);
+            } else {
+                alert(data.message || 'Registration failed!');
+            }
+        });
+    </script>
+</body>
+</html>
